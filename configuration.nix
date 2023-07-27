@@ -17,6 +17,8 @@
 
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-23.05/";
 
+  # Enable bluetooth
+  hardware.bluetooth.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -28,6 +30,18 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Setup systemmd
+  # Create systemd service
+  systemd.services.logiops = {
+    description = "An unofficial userspace driver for HID++ Logitech devices";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.logiops}/bin/logid";
+    };
+  };
+  # Configuration for logiops
+  environment.etc."logid.cfg".text = (builtins.readFile ./logi-ops.cfg);
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -109,12 +123,13 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kate
-      (vscode-with-extensions.override {
-        vscodeExtensions = with vscode-extensions; [
-          bbenoist.nix
-          octref.vetur
-        ];
-      })
+      # Commented out because couldn't find volar
+      # (vscode-with-extensions.override {
+      #   vscodeExtensions = with vscode-extensions; [
+      #     bbenoist.nix
+      #     vue.volar
+      #   ];
+      # })
     ];
   };
 
@@ -144,6 +159,7 @@
     gitkraken
     azuredatastudio
     spotify
+    logiops
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
