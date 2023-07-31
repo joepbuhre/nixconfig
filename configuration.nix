@@ -13,8 +13,7 @@
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-23.05/";
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.devices = [ "/dev/sda" ];
 
   networking.hostName = "buhrecompany"; # Define your hostname.
 
@@ -62,8 +61,6 @@
     gh
   ];
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # Setup networking
   systemd.network.networks."10-wan" = {
@@ -77,6 +74,19 @@
       { routeConfig.Gateway = "fe80::1"; }
     ];
   };  
+
+  # Initial empty root password for easy login:
+  users.users.root.initialHashedPassword = "";
+  services.openssh.permitRootLogin = "prohibit-password";
+
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    # Replace this by your SSH pubkey!
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFh8A1fO0ByWQyBZd8cfTdQzbsPvE1VdRnCsU5+X7Rivs10a/fgwNYhSnaOAKhR8VL1IdsK53A3JrgCngz8Rmg2bAopLSPYoAOvreQCn4QHk+6yW3udqou5pK8k8mUF5VuG5m048ClxHP9LxY+tuq67HYwihvfSjUwf0o6lICj2bOQ7mjflYwgcPa7xdSPzNJQroTioFbQODh6kZnAWsgm3aIa/TnIl5ziLEYmPlfZv28K65v2ksA7qvnIo6nz0nFGzw2oTO5Vzyb+zuEMjmqO9KjcgFewVmsUeyIQttGM4foT8Y3sfj/GwDwyH3dSMH9HPJWP7dxq1Pp1uXof+Tam6nXalA5tdt/xJiDH4MkJQOBSXyx7JkkzdzLlxQbVFm2TLEjOEQHAfm3mhgAaPFVCvof0L/uN629HoGUpVIrtrFhy33d/jipEYgTwJA9lZkqfX64ASjWiGgCbPS90nDzYqj27oluSFr65iOhgzOxDMLTzq07CjCe+XKPp8T5P3Js="
+  ];
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
