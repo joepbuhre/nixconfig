@@ -9,6 +9,7 @@
     services.traefik.staticConfigOptions = {
         api = { 
             dashboard = true;
+            insecure = true;
         };
         entryPoints = {
             web = {
