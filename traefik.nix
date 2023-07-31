@@ -4,11 +4,7 @@
     services.traefik.enable = true;
 
     # Configure Traefik, for example:
-    services.traefik.defaultEntryPoints = [ "http" "https" ];
     services.traefik.group = "traefik";
-    services.traefik.logLevel = "DEBUG";
-    services.traefik.dashboard = true;
-    services.traefik.api = true;
 
     services.traefik.staticConfigOptions = {
         api = { };
