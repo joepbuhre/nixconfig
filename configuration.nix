@@ -9,39 +9,14 @@
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
     ];
-  nix.nixPath = [
-    "nixpkgs=https://github.com/NixOS/nixpkgs/archive/b6bbc53029a31f788ffed9ea2d459f0bb0f0fbfc.tar.gz"
-    "nixos-config=/etc/nixos/configuration.nix"
-    "/nix/var/nix/profiles/per-user/root/channels"
-  ];
 
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-23.05/";
-
-  # Enable bluetooth
-  hardware.bluetooth.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Setup systemmd
-  # Create systemd service
-  systemd.services.logiops = {
-    description = "An unofficial userspace driver for HID++ Logitech devices";
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.logiops}/bin/logid";
-    };
-  };
-  # Configuration for logiops
-  environment.etc."logid.cfg".text = (builtins.readFile ./logi-ops.cfg);
+  networking.hostName = "buhrecompany"; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -64,83 +39,15 @@
     LC_TIME = "nl_NL.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # services.xrdp.enable = true;
-  # services.xrdp.defaultWindowManager = "startplasma-x11";
-  # services.xrdp.openFirewall = true;
-
-  # Setup KDE Wallet
-  security.pam.services.kwallet = {
-    name = "kwallet";
-    enableKwallet = true;
-  };
-
-
   # Allow docker
   virtualisation.docker.enable = true;
   users.extraGroups.docker.members = [ "jbuhre" ];
-
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.jbuhre = {
     isNormalUser = true;
     description = "Joep Buhre";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kate
-      # Commented out because couldn't find volar
-      # (vscode-with-extensions.override {
-      #   vscodeExtensions = with vscode-extensions; [
-      #     bbenoist.nix
-      #     vue.volar
-      #   ];
-      # })
-    ];
-  };
-
-  # Enable automatic login for the user.
-  # services.xserver.displayManager.autoLogin.enable = true;
-  # services.xserver.displayManager.autoLogin.user = "jbuhre";
-
-  services.xserver.displayManager = {
-    autoLogin = {
-      enable = false;
-    };
   };
 
   # Allow unfree packages
@@ -151,29 +58,25 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    vscode
-    ksuperkey
-    google-chrome
     git
     gh
-    gitkraken
-    azuredatastudio
-    spotify
-    logiops
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+
+  # Setup networking
+  systemd.network.networks."10-wan" = {
+    matchConfig.Name = "ens3"; # either ens3 (amd64) or enp1s0 (arm64)
+    networkConfig.DHCP = "ipv4";
+    address = [
+      # replace this address with the one assigned to your instance
+      "2a01:4f8:1c1e:ef48::/64"
+    ];
+    routes = [
+      { routeConfig.Gateway = "fe80::1"; }
+    ];
+  };  
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
