@@ -76,7 +76,7 @@
 
   # Initial empty root password for easy login:
   users.users.root.initialHashedPassword = "";
-  services.openssh.PermitRootLogin = "prohibit-password";
+  services.openssh.permitRootLogin = "prohibit-password";
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
