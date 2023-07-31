@@ -81,6 +81,10 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh = {
+    permitRootLogin = "no";
+    passwordAuthentication = false;
+  };
 
   users.users.jbuhre.openssh.authorizedKeys.keys = [
     # Replace this by your SSH pubkey!
