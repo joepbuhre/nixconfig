@@ -7,7 +7,9 @@
     services.traefik.group = "traefik";
 
     services.traefik.staticConfigOptions = {
-        api = { };
+        api = { 
+            dashboard = true;
+        };
         entryPoints = {
             web = {
                 address = ":80";
