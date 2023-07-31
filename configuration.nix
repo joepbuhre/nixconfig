@@ -42,13 +42,6 @@
   virtualisation.docker.enable = true;
   users.extraGroups.docker.members = [ "jbuhre" ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jbuhre = {
-    isNormalUser = true;
-    description = "Joep Buhre";
-    extraGroups = [ "networkmanager" "wheel" ];
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
