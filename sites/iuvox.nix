@@ -1,4 +1,4 @@
-{}:
+{ config, pkgs, ... }:
 {
     virtualisation.oci-containers.containers.whoogle = {                                                                                                                                                                                                                                      
     image = "traefik/whoami";                                                                                                                                                                                                                                                      
