@@ -1,5 +1,10 @@
 { config, pkgs, ... }:    
 {
+    imports =
+        [ # Include the results of the hardware scan.
+        ./sites/iuvox.nix
+        ./sites/joepbuhre.nix
+        ];
     # https://github.com/bradparker/bradparker.com/blob/main/bradparker.com/usr/local/src/bradparker.com/module.nix
     # Check this over here!
     

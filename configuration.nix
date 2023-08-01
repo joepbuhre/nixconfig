@@ -9,8 +9,10 @@
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       ./traefik.nix
-      ./sites/iuvox.nix
     ];
+  
+  virtualisation.oci-containers.backend = "docker";
+
 
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-23.05/";
 
@@ -54,6 +56,7 @@
     wget
     git
     gh
+    arion
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -90,14 +93,15 @@
   users.users.jbuhre.openssh.authorizedKeys.keys = [
     # Replace this by your SSH pubkey!
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFh8A1fO0ByWQyBZd8cfTdQzbsPvE1VdRnCsU5+X7Rivs10a/fgwNYhSnaOAKhR8VL1IdsK53A3JrgCngz8Rmg2bAopLSPYoAOvreQCn4QHk+6yW3udqou5pK8k8mUF5VuG5m048ClxHP9LxY+tuq67HYwihvfSjUwf0o6lICj2bOQ7mjflYwgcPa7xdSPzNJQroTioFbQODh6kZnAWsgm3aIa/TnIl5ziLEYmPlfZv28K65v2ksA7qvnIo6nz0nFGzw2oTO5Vzyb+zuEMjmqO9KjcgFewVmsUeyIQttGM4foT8Y3sfj/GwDwyH3dSMH9HPJWP7dxq1Pp1uXof+Tam6nXalA5tdt/xJiDH4MkJQOBSXyx7JkkzdzLlxQbVFm2TLEjOEQHAfm3mhgAaPFVCvof0L/uN629HoGUpVIrtrFhy33d/jipEYgTwJA9lZkqfX64ASjWiGgCbPS90nDzYqj27oluSFr65iOhgzOxDMLTzq07CjCe+XKPp8T5P3Js="
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDk2KmS3XlLHthcEJWtEvlZY9RywJKa7BwnNDvGdstw3/TJ9L7BLjEvuAei88Em8WsXNaKr+8rpOxtMbF8sQeEqJLS8zUQm0XbmgEXrqRS/A0P4ohZojiC/RU9//a0lVzKaYVnTZwc0lJdx2hGrk4iLO9U+oSng2iKjItPIKNIimOIqAci9NhdJSeAKnnjoGtoERfegQ8VzCQbt5Bcc+icLLSYsmzWXgkaQfAket8Fj+hOu2XwfauZ+cYHacAQNz/V3WUYdjjCKtelI1ktnWLWjxIOeKAtVt21XEa7y/FNI4LKLdDUTVckdSf3EC0jFNGju1RdK5Ffrm+LxRt/ljT9lo+Erjh8deRUd5smBOJ8oQpAvQM/vh0LjF1lhweYc4fngUU+GYz3bJDK4VMg5JeSADPBk6Gv4Gvj+0PaYcjixavPtkltuhC2rSO+GULEcIj1FANOS40p2tknIqNg8T78avC3qWESHHRncp2DA5dtwfvhpz9oCgeNIPvBunz79HS0= jbuhre@buhrecompany"
   ];
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 8080 443 ];
+  # networking.firewall.allowedTCPPorts = [ 80 8080 443 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
