@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       ./traefik.nix
-      ./iuvox.nix
+      ./sites/iuvox.nix
     ];
 
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-23.05/";
