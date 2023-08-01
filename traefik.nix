@@ -1,5 +1,8 @@
 { config, pkgs, ... }:    
 {
+    # https://github.com/bradparker/bradparker.com/blob/main/bradparker.com/usr/local/src/bradparker.com/module.nix
+    # Check this over here!
+    
     # Define Traefik here!
     services.traefik.enable = true;
 
