@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
+      ./hosts.nix
     ];
   nix.nixPath = [
     "nixpkgs=https://github.com/NixOS/nixpkgs/archive/b6bbc53029a31f788ffed9ea2d459f0bb0f0fbfc.tar.gz"
@@ -120,7 +121,7 @@
   users.users.jbuhre = {
     isNormalUser = true;
     description = "Joep Buhre";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "dialout" "tty"];
     packages = with pkgs; [
       kate
       # Commented out because couldn't find volar
@@ -147,7 +148,6 @@
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
@@ -157,9 +157,10 @@
     git
     gh
     gitkraken
-    azuredatastudio
     spotify
     logiops
+    libsForQt5.kdeconnect-kde
+    (callPackage ./packages/datastudio.nix {})
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -176,6 +177,15 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
+  networking.firewall = { 
+    enable = true;
+    allowedTCPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+    allowedUDPPortRanges = [ 
+      { from = 1714; to = 1764; } # KDE Connect
+    ];  
+  };  
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
