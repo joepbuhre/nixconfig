@@ -8,8 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
+      ./services/traefik.nix
       ./services/services.nix
-      ./traefik.nix
+      ./sites/traefik.nix
     ];
   
   virtualisation.oci-containers.backend = "docker";
@@ -57,7 +58,6 @@
     wget
     git
     gh
-    arion
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -86,9 +86,9 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh = {
-    permitRootLogin = "no";
-    passwordAuthentication = false;
+  services.openssh.settings = {
+    PermitRootLogin = "no";
+    PasswordAuthentication = false;
   };
 
   users.users.jbuhre.openssh.authorizedKeys.keys = [
@@ -98,11 +98,14 @@
   ];
 
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 80 8080 443 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  # Firewall rules
+  networking.firewall.enable = true;
+ networking.firewall.extraCommands = ''
+    iptables -A INPUT -m state --state NEW -j LOG --log-prefix "New Connection: "
+ '';
+  networking.firewall.allowedTCPPorts = [ 80 443 22 ];
+  networking.firewall.allowedUDPPorts = [ 22 ];
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

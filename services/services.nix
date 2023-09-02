@@ -1,11 +1,8 @@
 { config, pkgs, ... }:
 {
-    imports = [
-	./codeserver/codeserver.nix
-        ./iuvox/iuvox.nix
-        ./mssql/mssql.nix
+  imports =
+    [ # Include the results of the hardware scan.
+      ./traefik.nix
+      ./docker-networks.nix
     ];
-    system.activationScripts.mkServicesData = ''
-        chown -R jbuhre /services
-    '';
 }

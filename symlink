@@ -1,0 +1,2 @@
+#!/bin/bash
+rm /etc/nixos/configuration.nix && ln -s "$(pwd)/configuration.nix" /etc/nixos/configuration.nix || echo "Symlink failed"
