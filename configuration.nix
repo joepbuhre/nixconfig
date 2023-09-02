@@ -8,9 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      ./services/traefik.nix
       ./services/services.nix
-      ./sites/traefik.nix
     ];
   
   virtualisation.oci-containers.backend = "docker";
