@@ -98,11 +98,11 @@
 
   # Firewall rules
   networking.firewall.enable = true;
- networking.firewall.extraCommands = ''
-    iptables -A INPUT -m state --state NEW -j LOG --log-prefix "New Connection: "
- '';
-  networking.firewall.allowedTCPPorts = [ 80 443 22 ];
-  networking.firewall.allowedUDPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.extraCommands = ''
+    iptables -A nixos-fw -p tcp --source 86.80.146.150 --dport 1433 -j nixos-fw-accept
+    iptables -A nixos-fw -p tcp --source 86.80.146.150 --dport 22 -j nixos-fw-accept
+  '';
 
 
   # This value determines the NixOS release from which the default
