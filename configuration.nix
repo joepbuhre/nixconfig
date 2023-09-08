@@ -138,6 +138,7 @@
     logiops
     libsForQt5.kdeconnect-kde
     (callPackage ./packages/datastudio.nix {})
+    sublime-merge
   ];
 
   # Open ports in the firewall.
