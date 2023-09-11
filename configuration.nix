@@ -24,9 +24,8 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # Configuration for logiops
+  environment.etc."logid.cfg".text = (builtins.readFile ./logi-ops.cfg);
 
   # Setup systemmd
   # Create systemd service
@@ -37,8 +36,6 @@
       ExecStart = "${pkgs.logiops}/bin/logid";
     };
   };
-  # Configuration for logiops
-  environment.etc."logid.cfg".text = (builtins.readFile ./logi-ops.cfg);
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -139,6 +136,8 @@
     libsForQt5.kdeconnect-kde
     (callPackage ./packages/datastudio.nix {})
     sublime-merge
+    gnupg
+    pinentry
   ];
 
   # Open ports in the firewall.
